@@ -58,5 +58,31 @@ describe('Lottery Contract', ()=>{
         assert.equal(accounts[2], players[2]);
         assert.equal(3, players.length);
     })
+
+    // restriction check
+    it('requires minimum amt of ether to enter', async()=>{
+        try {
+            await lottery.methods.enter().send({
+                from : accounts[0],
+                value : 0
+            });
+            assert(false); //to assure that the test fails, we want this to fail
+        } catch (error) {
+            assert.ok(error);
+        }
+    })
+
+
+    it('only manager can call the winner function', async()=>{
+        try{
+            await lottery.methods.winner().send({
+                from : accounts[1]
+            });
+            assert(false);
+        }catch(error)
+        {
+            assert.ok(error);
+        }
+    })
 })
 
