@@ -84,5 +84,23 @@ describe('Lottery Contract', ()=>{
             assert.ok(error);
         }
     })
+
+    it('money transfer and player array reset', async()=>{
+        await lottery.methods.enter().send({
+            from: accounts[0],
+            value: web3.utils.toWei('2', 'ether')
+        })
+
+
+        const iniBal = await web3.eth.getBalance(accounts[0]);
+
+        await lottery.methods.winner().send({
+            from : accounts[0]
+        });
+
+        const newBal = await web3.eth.getBalance(accounts[0]);
+        const diff = newBal - iniBal;
+        assert(diff > web3.utils.toWei('1.8', 'ether')); // 1.8 because some gas amt is spent so something less than 2
+    })
 })
 
