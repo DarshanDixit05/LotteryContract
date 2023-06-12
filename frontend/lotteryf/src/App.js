@@ -2,8 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import lottery from './Lottery.js';
 import {useState, useEffect} from 'react';
-import Web3 from 'web3';
-const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+import web3 from './web3.js';
 
 function App() {
   const [manager, setManager] = useState('');
@@ -24,12 +23,14 @@ function App() {
     web3.eth.getBalance(lottery.options.address).then((res)=>{
       setBalance(res);
     })
+    console.log(lottery);
   });
 
   const handleSubmit = async(e) =>{
     e.preventDefault();
 
-    const accounts = await web3.eth.getAccounts();
+    const accounts = await web3.eth.requestAccounts();
+    console.log(accounts);
     setMessage("Working on transaction success...");
     await lottery.methods.enter().send({
       from: accounts[0],
@@ -46,7 +47,6 @@ function App() {
       <p>Manager : {manager}</p>
       <p>Total players : {players.length}</p>
       <p>Total balance : {balance} ether</p>
-
 
       <from>
         <h2>Enter ether to enter into the lottery!</h2>

@@ -3,8 +3,8 @@ const Web3 = require('web3')
 const { interface, bytecode } = require("./compile")
 
 const provider = new HDWalletProvider(
-    "adjust mass upon possible empower program category reject tag lake divert wife",
-    "https://goerli.infura.io/v3/e2b861bb8cb944ba83297b18fa1e9153"
+    "boss tumble network vacant siren battle ladder urge sure style claw police",
+    "https://goerli.infura.io/v3/84b2dcc58d894550827534824d3e4d93"
 );
 
 const web3 = new Web3(provider);
