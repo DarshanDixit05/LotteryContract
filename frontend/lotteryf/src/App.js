@@ -10,6 +10,7 @@ function App() {
   const [balance, setBalance] = useState('');
   const [ether, setEther] = useState();
   const [message, setMessage]=useState('');
+  const [winner, setWinner] = useState('');
 
   useEffect(() => {
     lottery.methods.getManager().call().then((res)=>{
@@ -23,14 +24,12 @@ function App() {
     web3.eth.getBalance(lottery.options.address).then((res)=>{
       setBalance(res);
     })
-    console.log(lottery);
   });
 
   const handleSubmit = async(e) =>{
     e.preventDefault();
 
     const accounts = await web3.eth.requestAccounts();
-    console.log(accounts);
     setMessage("Working on transaction success...");
     await lottery.methods.enter().send({
       from: accounts[0],
@@ -38,6 +37,17 @@ function App() {
     });
 
     setMessage("Transaction completed successfully!");
+  }
+
+  const handleWinner = async(e) =>{
+    e.preventDefault();
+
+    const accounts = await web3.eth.requestAccounts();
+    setWinner("Picking a winner...");
+    await lottery.methods.winner().send({
+      from: accounts[0]
+    });
+    setWinner("A is the winner!");
   }
 
 
@@ -56,6 +66,12 @@ function App() {
       </from>
       <button onClick={handleSubmit}>Enter</button>
       <h1>{message}</h1>
+
+      <hr/>
+
+      <h2>Pick a winner?</h2>
+      <button onClick={handleWinner}>Pick</button>
+      <h1>{winner}</h1>
     </div>
   );
 }
